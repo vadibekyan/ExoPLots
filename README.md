@@ -26,3 +26,5 @@ planet_discovery_stat()
 
 <img src="https://github.com/vadibekyan/ExoPLots/assets/25388659/c878719a-9464-489f-a22f-ed83dfd28dcd" alt="Figure" width="600" height="400">
 
+
+Further information is given (still work in progress) in the ``exoplanet_visualization.ipynb``
