@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 import numpy as np
-import pandas as pd
 
 def bcv_from_teff(teff):
     """
@@ -240,7 +239,7 @@ def creating_MR_ML_table(nea_full_table):
         nea_MR_final_table (DataFrame): Final table with relevant columns: 'pl_rade', 'pl_bmasse', 'Teq'.
     """
     # Select relevant columns from the full table
-    relevant_columns = ['pl_rade', 'pl_orbsmax', 'pl_bmasse', 'pl_orbper', 'sy_vmag', 'sy_plx', 'st_teff', 'st_mass']
+    relevant_columns = ['pl_rade', 'pl_radeerr1', 'pl_radeerr2', 'pl_orbsmax', 'pl_bmasse', 'pl_masseerr1', 'pl_masseerr2', 'pl_orbper',  'sy_vmag', 'sy_plx', 'st_teff', 'st_mass']
     nea_relevant = nea_full_table[relevant_columns]
 
     # Filter rows with positive values for mass and radius
@@ -252,14 +251,32 @@ def creating_MR_ML_table(nea_full_table):
     # Remove rows with NaN values except for 'pl_orbsmax' column
     nea_with_M_and_R_cleaned = nea_with_M_and_R.dropna(subset=nea_with_M_and_R.columns.drop('pl_orbsmax'))
 
+    # Calculating "a" from period and stellar mass
+    for i in range(len(nea_with_M_and_R_cleaned)):
+        if np.isnan(nea_with_M_and_R_cleaned.iloc[i]['pl_orbsmax']):
+            nea_with_M_and_R_cleaned.iloc[i]['pl_orbsmax'] = a_from_P(nea_with_M_and_R_cleaned.iloc[i]['st_mass'], nea_with_M_and_R_cleaned.iloc[i]['pl_orbper'])
+
+
     # Add 'Teq' column and initialize with 0
     nea_with_M_and_R_cleaned['Teq'] = 0
 
     # Calculate the equilibrium temperature 'Teq' using a helper function
     nea_with_M_and_R_cleaned = nea_with_M_and_R_cleaned.apply(lambda x: teq_hellper_function(x, 'pl_orbsmax', 'pl_orbper', 'st_teff', 'sy_vmag', 'sy_plx', 'st_mass', 'Teq'), axis=1)
 
+    # Very low Teq values are unrealisitc. Removed
+    nea_with_M_and_R_cleaned = nea_with_M_and_R_cleaned[nea_with_M_and_R_cleaned.Teq > 10]
+
+    # calculating the mean errors of M and R
+    nea_with_M_and_R_cleaned['pl_rade_err'] = (nea_with_M_and_R_cleaned['pl_radeerr1'] - nea_with_M_and_R_cleaned['pl_radeerr2'])/2
+    nea_with_M_and_R_cleaned['pl_bmasse_err'] = (nea_with_M_and_R_cleaned['pl_masseerr1'] - nea_with_M_and_R_cleaned['pl_masseerr2'])/2
+
+    M_threshold = 0.25
+    R_threshold = 0.25
+    precise_criteria = (nea_with_M_and_R_cleaned['pl_rade_err']/nea_with_M_and_R_cleaned['pl_rade'] < R_threshold) & (nea_with_M_and_R_cleaned['pl_bmasse_err']/nea_with_M_and_R_cleaned['pl_bmasse'] < M_threshold)
+    nea_with_M_and_R_cleaned_accurate = nea_with_M_and_R_cleaned[precise_criteria]
+
     # Select the final columns for the output table and reset the index
-    nea_MR_final_table = nea_with_M_and_R_cleaned[['pl_rade', 'pl_bmasse', 'Teq']].reset_index(drop=True)
+    nea_MR_final_table = nea_with_M_and_R_cleaned_accurate[['pl_rade', 'pl_bmasse', 'Teq']].reset_index(drop=True)
 
     return nea_MR_final_table
 

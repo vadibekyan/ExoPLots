@@ -158,7 +158,7 @@ def mass_vs_year_plot():
     # Create the figure and adjust its settings
     fig = plt.figure(1, figsize=(9, 6), dpi=200)
     ax = plt.gca()
-    fig.subplots_adjust(left=0.1, right=0.98, bottom=0.1, top=0.99)
+    fig.subplots_adjust(left=0.12, right=0.98, bottom=0.11, top=0.99)
 
     # Set up the subplot
     ax = plt.subplot(1, 1, 1)
