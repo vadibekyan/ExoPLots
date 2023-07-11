@@ -54,7 +54,7 @@ def optuna_RF_Reg(X_train, y_train, n_trials, display = False):
 
 def modified_learning_curve(X_train, y_train, X_test, y_test, model, N, CV = 10, figure = True):
 
-    train_sizes =np.linspace(0.3, 0.99, N)
+    train_sizes =np.linspace(0.1, 0.99, N)
     print ()
 
     results = pd.DataFrame(columns = ['train_size', 'mae_train_mean', 'mae_train_std', 'mae_test_mean', 'mae_test_std'], index = range(0, N))
