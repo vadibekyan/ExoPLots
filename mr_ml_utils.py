@@ -25,10 +25,10 @@ def optuna_RF_Reg(X_train, y_train, n_trials, display = False):
 
         RF_reg_params = dict(
             n_estimators=trial.suggest_int("n_estimators", 20, 200, step = 20),
-            max_depth=trial.suggest_int("max_depth", 1, 20),
-            min_samples_split = trial.suggest_int("min_samples_split", 2, 10),
-            min_samples_leaf = trial.suggest_int("min_samples_leaf", 1, 10),
-            max_features = trial.suggest_int("max_features", 1, len(X_train.columns)),
+            max_depth=trial.suggest_int("max_depth", 2, 10),
+            min_samples_split = trial.suggest_int("min_samples_split", 2, 6),
+            #min_samples_leaf = trial.suggest_int("min_samples_leaf", 3, 6),
+            max_features = trial.suggest_int("max_features", 3, len(X_train.columns)),
             random_state = 0
         )
 
@@ -52,18 +52,15 @@ def optuna_RF_Reg(X_train, y_train, n_trials, display = False):
     return RFR_best_params
 
 
-def modified_learning_curve(X_train, y_train, X_test, y_test, model, N, CV = 10, figure = True):
+def modified_learning_curve(X_train, y_train, X_test, y_test, model, N, CV = 5, display = False, figure = True):
 
-    train_sizes =np.linspace(0.1, 0.99, N)
+    train_sizes =np.linspace(0.05, 0.99, N)
     print ()
 
     results = pd.DataFrame(columns = ['train_size', 'mae_train_mean', 'mae_train_std', 'mae_test_mean', 'mae_test_std'], index = range(0, N))
 
 
     for i, train_size in enumerate(train_sizes):
-
-        print (i)
-
         mae_train = []
         mae_test = []
 
@@ -89,7 +86,7 @@ def modified_learning_curve(X_train, y_train, X_test, y_test, model, N, CV = 10,
         results['mae_test_mean'][i] = np.mean(mae_test)
         results['mae_test_std'][i] = np.std(mae_test)
 
-        if i%1 ==0:
+        if display:
             print (f'For a training size of {len(X_train_tmp)}, MAE(train) = {np.mean(mae_train):.3f} and MAE(test) = {np.mean(mae_test):.3f}')
 
     # Iterate over each column in the DataFrame
@@ -123,3 +120,29 @@ def modified_learning_curve(X_train, y_train, X_test, y_test, model, N, CV = 10,
         plt.show()
     
     return results
+
+
+def RF_training_with_display(X,y, test_size = 0.15, n_trials = 20):
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size)
+
+    RFR_base_model = RandomForestRegressor(random_state =0)
+    MAE_base = score_dataset(X_train, y_train, RFR_base_model)
+
+    print (f'The base MAE score from the trainin set is {MAE_base:.0f}')
+
+    RFR_best_params = optuna_RF_Reg(X_train, y_train, n_trials, display = False)
+
+    best_model = RandomForestRegressor(**RFR_best_params)
+
+    final_trained_model_full_data = RandomForestRegressor(**RFR_best_params).fit(X, y)
+    final_trained_model_train_data = RandomForestRegressor(**RFR_best_params).fit(X_train, y_train)
+
+    y_train_predict = final_trained_model_train_data.predict(X_train)
+    y_test_predict = final_trained_model_train_data.predict(X_test)
+    print (f'\nAME of the BEST RF Regressor: Training data {(mean_absolute_error(y_train, y_train_predict))}')
+    print (f'\nAME of the BEST RF Regressor: Test data {(mean_absolute_error(y_test, y_test_predict))}')
+
+    results = modified_learning_curve(X_train, y_train, X_test, y_test, final_trained_model_train_data, 5)
+
+    return best_model, final_trained_model_train_data, final_trained_model_full_data
