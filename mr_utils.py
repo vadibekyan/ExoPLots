@@ -236,7 +236,7 @@ def creating_MR_ML_table(nea_full_table):
         nea_full_table (DataFrame): Full table containing the data.
 
     Returns:
-        nea_MR_final_table (DataFrame): Final table with relevant columns: 'pl_rade', 'pl_bmasse', 'Teq'.
+        nea_MR_final_table (DataFrame): Final table with relevant columns
     """
     # Select relevant columns from the full table
     relevant_columns = ['pl_rade', 'pl_radeerr1', 'pl_radeerr2', 'pl_orbsmax', 'pl_bmasse', 'pl_masseerr1', 'pl_masseerr2', 'pl_orbper',  'sy_vmag', 'sy_plx', 'st_teff', 'st_mass', 'st_met']
@@ -283,13 +283,13 @@ def creating_MR_ML_table(nea_full_table):
 
 def creating_R_ML_table(nea_full_table):
     """
-    Create a table with relevant columns for mass-radius relation analysis and calculate the equilibrium temperature (Teq).
+    Create a table with relevant columns to calculate the equilibrium temperature (Teq) and estimate the masses.
 
     Parameters:
         nea_full_table (DataFrame): Full table containing the data.
 
     Returns:
-        nea_MR_final_table (DataFrame): Final table with relevant columns: 'pl_rade', 'pl_bmasse', 'Teq'.
+        nea_MR_final_table (DataFrame): Final table with relevant columns
     """
     # Select relevant columns from the full table
     relevant_columns = ['pl_rade', 'pl_radeerr1', 'pl_radeerr2', 'pl_orbsmax', 'pl_orbper',  'sy_vmag', 'sy_plx', 'st_teff', 'st_mass', 'st_met']
@@ -332,11 +332,33 @@ def creating_R_ML_table(nea_full_table):
     return nea_R_final_table
 
 
-def MR_plot(ax, x, y, color, label, size = 70,  xscale = 'log', yscale = 'log'):
+def MR_plot(ax, x, y, color, label, size=70, xscale='log', yscale='log'):
+    """
+    Plot a scatter plot of mass vs. radius.
 
-    ax.scatter(x, y, c = color, s= size, label = label)
+    Parameters:
+        ax: The Matplotlib Axes object to plot on.
+        x (array-like): The x-values (mass).
+        y (array-like): The y-values (radius).
+        color: The color of the scatter points.
+        label: The label for the scatter points.
+        size (float): The size of the scatter points (default: 70).
+        xscale (str): The scaling of the x-axis (default: 'log').
+        yscale (str): The scaling of the y-axis (default: 'log').
+
+    Returns:
+        None
+
+    """
+
+    # Scatter plot of x and y with specified color, size, and label
+    ax.scatter(x, y, c=color, s=size, label=label)
+
+    # Set the scaling of the x-axis and y-axis
     ax.set_xscale(xscale)
     ax.set_yscale(yscale)
 
-    ax.set_xlabel('Mass ($M_{\mathrm{\oplus}}$)', fontsize = 18)
-    ax.set_ylabel('Radius ($R_{\mathrm{\oplus}}$)', fontsize = 18)
+    # Set the x-axis and y-axis labels
+    ax.set_xlabel('Mass ($M_{\mathrm{\oplus}}$)', fontsize=18)
+    ax.set_ylabel('Radius ($R_{\mathrm{\oplus}}$)', fontsize=18)
+
