@@ -104,41 +104,6 @@ nea_mass_year_Other, nea_mass_year_Transit, nea_mass_year_RV, nea_mass_year_Micr
 
 
 def mass_vs_year_plot():
-
-
-
-
-    # Set y-axis scale to logarithmic
-    ax.set_yscale('log')
-
-    # Set y-axis limits
-    ymin = np.min(np.log10(nea_mass_year_sample.pl_bmasse)) - 0.2
-    ymax = np.max(np.log10(nea_mass_year_sample.pl_bmasse)) + 0.2
-    plt.ylim(10**ymin, 10**ymax)
-
-    # Set x-axis limits
-    plt.xlim(1991, current_year+1)
-
-    # Set x and y tick labels' font size
-    plt.xticks(fontsize=18)
-    plt.yticks(fontsize=18)
-
-    # Set legend properties
-    plt.legend(loc=(0.25, 0.04), fontsize=16, labelspacing=0.1)
-
-    # Set tick parameters
-    plt.tick_params(axis='both', top='on', bottom='on', right='on', left='on')
-
-    # Set x and y labels
-    plt.ylabel('Mass ($M_{\mathrm{\oplus}}$)', fontsize=20)
-    plt.xlabel('Year of discovery', fontsize=20)
-
-    # Save the plot as an image
-    plt.savefig('mass_vs_year.png', facecolor='White')
-
-
-
-def mass_vs_year_plot():
     """
     Generate a scatter plot of planet mass versus year of discovery.
 
