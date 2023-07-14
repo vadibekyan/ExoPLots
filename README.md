@@ -2,7 +2,9 @@
 
 Several codes (**mass_year**, **m_from_r**) to work and visualize exoplanet data extracted from the NASA Exoplanet Archive
 
-## Usage
+
+
+## Mass vs Year
 
 **mass_year** has two potentially useful functions.
 
@@ -29,7 +31,7 @@ planet_discovery_stat()
 
 Further information is given (work in progress) in the ``exoplanet_visualization.ipynb``
 
-
+## Mass from Radius
 
 **m_from_r** estimates the masses of planets from their radius and some other properties.
 
