@@ -1,6 +1,6 @@
 # ExoPLots
 
-Several codes (**mass_year**, ) to visualize exoplanet data extracted from the NASA Exoplanet Archive
+Several codes (**mass_year**, **m_from_r**) to work and visualize exoplanet data extracted from the NASA Exoplanet Archive
 
 ## Usage
 
@@ -28,3 +28,13 @@ planet_discovery_stat()
 
 
 Further information is given (work in progress) in the ``exoplanet_visualization.ipynb``
+
+
+
+**m_from_r** estimates the masses of planets from their radius and some other properties.
+
+Below goes the M-R diagram for the planets with observed and predicted masses:
+
+<img src="https://github.com/vadibekyan/ExoPLots/assets/25388659/9459bd59-ebee-4aaa-b23a-163df7387046" alt="Figure" width="600" height="400">
+
+Further information is given in the ``mr_ml.ipynb``
