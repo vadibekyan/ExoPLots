@@ -24,10 +24,14 @@ planet_discovery_stat()
 35 by other methods
 -----     End     ----
 ```
-``mass_vs_year_plot()``  plots the mass of the discovered planets as a function of the year of their discovery.
+``mass_period_plot()``  plots the mass of the discovered planets as a function of the year of their discovery.
+
+<img src="https://github.com/vadibekyan/ExoPLots/assets/25388659/4ca1d23d-17d3-485a-8c70-db693cfcc173" alt="Figure" width="600" height="400">
+
+
+``mass_vs_year_plot()``  plots the mass of the discovered planets as a function of their orbital periods.
 
 <img src="https://github.com/vadibekyan/ExoPLots/assets/25388659/c878719a-9464-489f-a22f-ed83dfd28dcd" alt="Figure" width="600" height="400">
-
 
 Further information is given (work in progress) in the ``exoplanet_visualization.ipynb``
 
