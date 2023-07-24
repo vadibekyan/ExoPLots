@@ -67,10 +67,10 @@ def optuna_RF_Reg(X_train, y_train, n_trials, display=False):
         """
         # Define the hyperparameters to optimize using Optuna's suggest methods
         RF_reg_params = dict(
-            n_estimators=trial.suggest_int("n_estimators", 20, 200, step=20),
-            max_depth=trial.suggest_int("max_depth", 2, 10),
-            min_samples_split=trial.suggest_int("min_samples_split", 2, 6),
-            #min_samples_leaf=trial.suggest_int("min_samples_leaf", 3, 6),
+            n_estimators=trial.suggest_int("n_estimators", 20, 160, step=20),
+            max_depth=trial.suggest_int("max_depth", 2, 50),
+            min_samples_split=trial.suggest_int("min_samples_split", 2, 50),
+            #min_samples_leaf=trial.suggest_int("min_samples_leaf", 2, 10),
             max_features=trial.suggest_int("max_features", 2, len(X_train.columns)),
             random_state=0
         )
