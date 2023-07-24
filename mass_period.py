@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 
+
 def creating_data_to_plot():
     # Function to create data for plotting
 
@@ -92,10 +93,6 @@ def mass_period_plot():
     sns.set_style("white")
     plt.rcParams['legend.handlelength'] = 0.1
 
-    # Set the lower limit of x to 1988
-    # The upper limit will be set one year after the current date
-    today = date.today()
-    current_year = today.year
 
     # Create the figure and adjust its settings
     fig = plt.figure(1, figsize=(9, 6), dpi=200)
@@ -118,12 +115,25 @@ def mass_period_plot():
 
     # Set image paths and scatter images
     current_dir = os.getcwd()
-    images_directory = os.path.join(current_dir, 'ss_planet_images')
 
+    x = 88
+    y = 0.055
+    image_path = os.path.join(current_dir, 'ss_planet_images', 'mercury.png')
+    imscatter(x, y, image_path, zoom=0.15, ax=ax)
+
+    x = 224
+    y = 0.815
+    image_path = os.path.join(current_dir, 'ss_planet_images','venus.png')
+    imscatter(x, y, image_path, zoom=0.2, ax=ax)
 
     x = 365
     y = 1.0
     image_path = os.path.join(current_dir, 'ss_planet_images', 'earth.png')
+    imscatter(x, y, image_path, zoom=0.4, ax=ax)
+
+    x = 687
+    y = 0.107
+    image_path = os.path.join(current_dir, 'ss_planet_images','mars.png')
     imscatter(x, y, image_path, zoom=0.4, ax=ax)
 
     x = 4332
@@ -131,15 +141,21 @@ def mass_period_plot():
     image_path = os.path.join(current_dir, 'ss_planet_images', 'jupiter.png')
     imscatter(x, y, image_path, zoom=0.7, ax=ax)
 
+    x = 10759
+    y = 95
+    image_path = os.path.join(current_dir, 'ss_planet_images', 'saturn.png')
+    imscatter(x, y, image_path, zoom=0.4, ax=ax)
+
+    x = 31000
+    y = 14.6
+    image_path = os.path.join(current_dir, 'ss_planet_images','uranus.png')
+    imscatter(x, y, image_path, zoom=0.25, ax=ax)
+
     x = 60152
     y = 17.2
     image_path = os.path.join(current_dir, 'ss_planet_images', 'neptune.png')
     imscatter(x, y, image_path, zoom=0.7, ax=ax)
    
-
-    plt.xlabel('Period (day)', fontsize = 20)
-    plt.ylabel('Mass (M$_{\oplus}$)', fontsize = 20)
-    plt.tight_layout()
 
 
     # Set y-axis scale to logarithmic
@@ -157,19 +173,17 @@ def mass_period_plot():
     plt.yticks(fontsize=18)
 
     # Set legend properties
-    plt.legend(loc=(0.7, 0.005), fontsize = 20, labelspacing=0.1)
+    plt.legend(loc = 'best', fontsize = 20, labelspacing=0.1)
 
     # Set tick parameters
     plt.tick_params(axis='both', top='on', bottom='on', right='on', left='on')
 
     # Set x and y labels
     plt.ylabel('Mass ($M_{\mathrm{\oplus}}$)', fontsize=20)
-    plt.xlabel('Year of discovery', fontsize=20)
+    plt.xlabel('Period (days)', fontsize=20)
 
     # Save the plot as an image
     plt.savefig('mass_period.png', facecolor='White')
-
-
 
 
 
