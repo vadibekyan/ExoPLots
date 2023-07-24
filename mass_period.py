@@ -15,24 +15,24 @@ def creating_data_to_plot():
     nea_full_table = open_nea_table()
 
     # Select relevant columns from the NEA table
-    relevant_columns = ['disc_year', 'discoverymethod', 'pl_bmasse']
+    relevant_columns = ['pl_orbper', 'discoverymethod', 'pl_bmasse']
     nea_relevant = nea_full_table[relevant_columns]
 
     # Select planets with masses greater than 0
-    nea_mass_year_sample = nea_relevant[nea_relevant.pl_bmasse > 0].reset_index()
+    nea_mass_period_sample = nea_relevant[nea_relevant.pl_bmasse > 0].reset_index()
 
     # Planets discovered by Transit method or TTV are considered as Transiting planets
-    nea_mass_year_Transit = nea_mass_year_sample[(nea_mass_year_sample.discoverymethod == 'Transit') | (nea_mass_year_sample.discoverymethod == 'Transit Timing Variations')]
-    nea_mass_year_RV = nea_mass_year_sample[nea_mass_year_sample.discoverymethod == 'Radial Velocity']
-    nea_mass_year_Imaging = nea_mass_year_sample[nea_mass_year_sample.discoverymethod == 'Imaging']
-    nea_mass_year_Microlensing = nea_mass_year_sample[nea_mass_year_sample.discoverymethod == 'Microlensing']
+    nea_mass_period_Transit = nea_mass_period_sample[(nea_mass_period_sample.discoverymethod == 'Transit') | (nea_mass_period_sample.discoverymethod == 'Transit Timing Variations')]
+    nea_mass_period_RV = nea_mass_period_sample[nea_mass_period_sample.discoverymethod == 'Radial Velocity']
+    nea_mass_period_Imaging = nea_mass_period_sample[nea_mass_period_sample.discoverymethod == 'Imaging']
+    nea_mass_period_Microlensing = nea_mass_period_sample[nea_mass_period_sample.discoverymethod == 'Microlensing']
 
     # Selecting planets detected by "Other" methods
-    rv_trainsiting_imaging_microlensing = pd.concat([nea_mass_year_RV, nea_mass_year_Transit, nea_mass_year_Imaging, nea_mass_year_Microlensing])
-    nea_mass_year_Other = nea_mass_year_sample.drop(rv_trainsiting_imaging_microlensing.index)
+    rv_trainsiting_imaging_microlensing = pd.concat([nea_mass_period_RV, nea_mass_period_Transit, nea_mass_period_Imaging, nea_mass_period_Microlensing])
+    nea_mass_period_Other = nea_mass_period_sample.drop(rv_trainsiting_imaging_microlensing.index)
 
     # Return the created data for plotting
-    return nea_mass_year_Other, nea_mass_year_Transit, nea_mass_year_RV, nea_mass_year_Microlensing, nea_mass_year_Imaging, nea_mass_year_sample, nea_full_table
+    return nea_mass_period_Other, nea_mass_period_Transit, nea_mass_period_RV, nea_mass_period_Microlensing, nea_mass_period_Imaging, nea_mass_period_sample, nea_full_table
 
 
 def imscatter(x, y, image, ax=None, zoom=1):
@@ -78,10 +78,9 @@ def imscatter(x, y, image, ax=None, zoom=1):
 
 
 # Call the function and assign the returned values to variables
-nea_mass_year_Other, nea_mass_year_Transit, nea_mass_year_RV, nea_mass_year_Microlensing, nea_mass_year_Imaging, nea_mass_year_sample, nea_full_table = creating_data_to_plot()
+nea_mass_period_Other, nea_mass_period_Transit, nea_mass_period_RV, nea_mass_period_Microlensing, nea_mass_period_Imaging, nea_mass_period_sample, nea_full_table = creating_data_to_plot()
 
-
-def mass_vs_year_plot():
+def mass_period_plot():
     """
     Generate a scatter plot of planet mass versus year of discovery.
 
@@ -107,16 +106,12 @@ def mass_vs_year_plot():
     ax = plt.subplot(1, 1, 1)
 
     # Scatter plots for different methods
-    ax.scatter(nea_mass_year_Other.disc_year, nea_mass_year_Other.pl_bmasse, color='green', s=70, alpha=0.99, label='Other')
-    ax.scatter(nea_mass_year_Transit.disc_year, nea_mass_year_Transit.pl_bmasse, color='royalblue', s=70, alpha=0.9, label='Transit/TTV')
-    ax.scatter(nea_mass_year_RV.disc_year, nea_mass_year_RV.pl_bmasse, color='red', s=70, alpha=0.4, label='RV')
-    ax.scatter(nea_mass_year_Microlensing.disc_year, nea_mass_year_Microlensing.pl_bmasse, color='yellow', s=70, alpha=0.4, label='Microlensing')
-    ax.scatter(nea_mass_year_Imaging.disc_year, nea_mass_year_Imaging.pl_bmasse, color='black', s=70, alpha=0.99, label='Imaging')
+    ax.scatter(nea_mass_period_Other.pl_orbper, nea_mass_period_Other.pl_bmasse, color='green', s=70, alpha=0.99, label='Other')
+    ax.scatter(nea_mass_period_Transit.pl_orbper, nea_mass_period_Transit.pl_bmasse, color='royalblue', s=70, alpha=0.9, label='Transit/TTV')
+    ax.scatter(nea_mass_period_RV.pl_orbper, nea_mass_period_RV.pl_bmasse, color='red', s=70, alpha=0.4, label='RV')
+    ax.scatter(nea_mass_period_Microlensing.pl_orbper, nea_mass_period_Microlensing.pl_bmasse, color='yellow', s=70, alpha=0.4, label='Microlensing')
+    ax.scatter(nea_mass_period_Imaging.pl_orbper, nea_mass_period_Imaging.pl_bmasse, color='black', s=70, alpha=0.99, label='Imaging')
 
-    # Add horizontal lines
-    plt.hlines(y=1, xmin=1991, xmax=current_year+1, linewidth=1, color='grey', linestyle='--')
-    plt.hlines(y=17.15, xmin=1991, xmax=current_year+1, linewidth=1, color='grey', linestyle='--')
-    plt.hlines(y=317, xmin=1991, xmax=current_year+1, linewidth=1, color='grey', linestyle='--')
 
     # Set tick parameters
     ax.tick_params(axis='both', which='major', direction='in', length=6, width=1.2)
@@ -125,44 +120,44 @@ def mass_vs_year_plot():
     current_dir = os.getcwd()
     images_directory = os.path.join(current_dir, 'ss_planet_images')
 
-    x = 1992.4
+
+    x = 365
     y = 1.0
     image_path = os.path.join(current_dir, 'ss_planet_images', 'earth.png')
     imscatter(x, y, image_path, zoom=0.4, ax=ax)
 
-    x = 1992.4
+    x = 4332
     y = 317
     image_path = os.path.join(current_dir, 'ss_planet_images', 'jupiter.png')
     imscatter(x, y, image_path, zoom=0.7, ax=ax)
 
-    x = 1992.4
-    y = 17.15
+    x = 60152
+    y = 17.2
     image_path = os.path.join(current_dir, 'ss_planet_images', 'neptune.png')
     imscatter(x, y, image_path, zoom=0.7, ax=ax)
+   
 
-    x = 1995
-    y = 150
-    image_path = os.path.join(current_dir, 'ss_planet_images', 'nobel.png')
-    imscatter(x, y, image_path, zoom = 0.8, ax=ax)
+    plt.xlabel('Period (day)', fontsize = 20)
+    plt.ylabel('Mass (M$_{\oplus}$)', fontsize = 20)
+    plt.tight_layout()
 
 
     # Set y-axis scale to logarithmic
     ax.set_yscale('log')
+    ax.set_xscale('log')
 
     # Set y-axis limits
-    ymin = np.min(np.log10(nea_mass_year_sample.pl_bmasse)) - 0.2
-    ymax = np.max(np.log10(nea_mass_year_sample.pl_bmasse)) + 0.2
-    plt.ylim(10**ymin, 10**ymax)
+    #plt.xlim(10**-1.5,10**6.)
+    plt.ylim(10**-1.4,10**4.6)
+    #ax.yaxis.set_major_formatter(ScalarFormatter())
 
-    # Set x-axis limits
-    plt.xlim(1991, current_year+1)
 
     # Set x and y tick labels' font size
     plt.xticks(fontsize=18)
     plt.yticks(fontsize=18)
 
     # Set legend properties
-    plt.legend(loc=(0.25, 0.04), fontsize=16, labelspacing=0.1)
+    plt.legend(loc=(0.7, 0.005), fontsize = 20, labelspacing=0.1)
 
     # Set tick parameters
     plt.tick_params(axis='both', top='on', bottom='on', right='on', left='on')
@@ -172,9 +167,11 @@ def mass_vs_year_plot():
     plt.xlabel('Year of discovery', fontsize=20)
 
     # Save the plot as an image
-    plt.savefig('mass_vs_year.png', facecolor='White')
+    plt.savefig('mass_period.png', facecolor='White')
+
+
 
 
 
 if __name__ == '__main__':
-    mass_vs_year_plot()
+    mass_period_plot()
