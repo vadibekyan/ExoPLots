@@ -1,6 +1,6 @@
 # ExoPLots
 
-Several codes (**mass_year**, **m_from_r**) to work and visualize exoplanet data extracted from the NASA Exoplanet Archive
+Several codes (**mass_year**, **mass_period**) to visualize exoplanet data extracted from the NASA Exoplanet Archive
 
 
 
