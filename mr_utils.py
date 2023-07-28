@@ -275,13 +275,8 @@ def creating_MR_ML_table(nea_full_table):
     precise_criteria = (nea_with_M_and_R_cleaned['pl_rade_err']/nea_with_M_and_R_cleaned['pl_rade'] < R_threshold) & (nea_with_M_and_R_cleaned['pl_bmasse_err']/nea_with_M_and_R_cleaned['pl_bmasse'] < M_threshold)
     nea_with_M_and_R_cleaned_accurate = nea_with_M_and_R_cleaned[precise_criteria]
 
-    # Selecting only planets with masses above 1 Mearh (there are very few such planets)
-    # and below 13 Jup (~4000 Mearth) corresponding to Brown Dwarf mass
-
-    nea_with_M_and_R_cleaned_accurate_planets = nea_with_M_and_R_cleaned_accurate[(nea_with_M_and_R_cleaned_accurate.pl_bmasse > 1) & (nea_with_M_and_R_cleaned_accurate.pl_bmasse < 4000)]
-
     # Select the final columns for the output table and reset the index
-    nea_MR_final_table = nea_with_M_and_R_cleaned_accurate_planets[['pl_rade', 'pl_bmasse', 'Teq', 'st_teff', 'pl_orbsmax', 'st_met']].reset_index(drop=True)
+    nea_MR_final_table = nea_with_M_and_R_cleaned_accurate[['pl_rade', 'pl_bmasse', 'Teq', 'st_teff', 'pl_orbsmax', 'st_met']].reset_index(drop=True)
 
     return nea_MR_final_table
 
