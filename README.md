@@ -28,6 +28,8 @@ planet_discovery_stat()
 
 <img src="https://github.com/vadibekyan/ExoPLots/assets/25388659/c878719a-9464-489f-a22f-ed83dfd28dcd" alt="Figure" width="600" height="400">
 
+## Mass vs Period with GMM clustering
+
 ``mass_period_plot()``  plots the mass of the discovered planets as a function of their orbital periods. It has options to show the Solar System planets and also perform a [Gaussian Mixture Model](https://scikit-learn.org/stable/modules/mixture.html) clustering to identify 3 clusters of planets in the diagram.
 
 <img src="https://github.com/vadibekyan/ExoPLots/assets/25388659/48aab43c-3f11-45de-880a-5f30e1658c42" alt="Figure" width="600" height="400">
